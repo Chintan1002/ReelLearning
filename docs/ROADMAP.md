@@ -15,7 +15,7 @@ Read these before doing anything.
    are unmet. The dependency graph in §3 is binding.
 2. **Update the ledger in §4** at the end of every task — status, date, and the commit SHA.
    The ledger is how you know where you are when a session resumes. Treat it as state, not
-   documentation.
+   documentation. **Commit and push it** — see §7.
 3. **Stop at every 🚦 GATE.** A gate needs a human decision or an external unblock. Do not
    infer the answer, do not build past it, do not pick the "likely" branch. Report what you
    need and stop.
@@ -348,6 +348,8 @@ Restated because they are violated by "reasonable" defaults:
 
 1. Update the §4 ledger — status and commit SHA.
 2. Commit with requirement IDs in the message.
-3. If a doc was contradicted, ensure the fix is in the same commit; mention it so the
+3. **Push to `origin/main`.** The remote is the durable record of progress; an unpushed
+   ledger update is not progress. Push at the end of every task, not only at end of session.
+4. If a doc was contradicted, ensure the fix is in the same commit; mention it so the
    project copy can be synced.
-4. State in one line: what is done, and the next task with its preconditions.
+5. State in one line: what is done, and the next task with its preconditions.

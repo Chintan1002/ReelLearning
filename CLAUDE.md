@@ -129,7 +129,10 @@ not fail.
 
 ### Non-negotiable
 
-- **No secrets in the repo.** Session cookies, Meta tokens, API keys — env only.
+- **No secrets in the repo.** Session cookies, Meta tokens, API keys — env only. **The
+  GitHub remote is public** (`Chintan1002/ReelLearning`), so anything committed is
+  world-readable the moment it is pushed. Check `.gitignore` covers a new file's shape
+  before adding it.
 - **Never lose a capture.** Failures park with the raw payload for replay. Silent drops are
   the one unacceptable failure mode.
 - Volume is a **few items per week, under 100 to backfill**. Optimizing for throughput is
@@ -163,6 +166,10 @@ Run `scripts/sync-check.sh` any time to see the current state.
 - Docs are the source of truth for intent; code follows them. If code must diverge, **update
   the doc in the same change** — a stale spec is worse than none.
 - Cite requirement IDs in commit messages.
+- **Commit and push to `origin/main` at the end of every task**, together with the ROADMAP
+  ledger update (ROADMAP §7). The remote is `https://github.com/Chintan1002/ReelLearning.git`
+  and is the durable record of progress — work that only exists locally does not count as
+  progress. Do not batch a week of tasks into one push.
 - Keep the four docs' numbering stable; append rather than renumber.
 - Prefer boring, well-understood technology. This is a system that must keep working with
   near-zero maintenance attention, not a place to try things.
