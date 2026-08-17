@@ -1,0 +1,32 @@
+# secrets — never commit
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+cookies.txt
+*cookies*.json
+
+# downloaded media (large, reproducible)
+media/
+storage/
+*.mp4
+*.mov
+*.jpg
+*.jpeg
+*.png
+!docs/**/*.png
+
+# sync state — machine-local, not shared
+.sync/manifest.tsv
+
+# junk
+.DS_Store
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+dist/
+build/
+.pytest_cache/
