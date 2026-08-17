@@ -3,6 +3,24 @@
 > Read this before touching anything. It encodes decisions that were argued out
 > and settled; re-deriving them from scratch will produce worse answers.
 
+## ▶ Start here
+
+**`docs/ROADMAP.md` is the execution protocol.** It defines what to build, in what order,
+and when you may move on. At the start of every session:
+
+1. Read this file (constraints).
+2. Open `docs/ROADMAP.md` §4 and find the first task not marked `done`.
+3. Read only the requirement rows and architecture section that task names.
+4. State the task ID you are starting and whether its preconditions are met.
+
+**Update the ROADMAP ledger at the end of every task.** It is state, not documentation — it
+is how the next session knows where you left off.
+
+**Stop at every 🚦 GATE.** Gates need a human decision or an external unblock. Do not infer
+the answer or build past it.
+
+**The first task is T0 — a throwaway extraction spike. Do not start with infrastructure.**
+
 ---
 
 ## 1. What this is
@@ -34,6 +52,11 @@ with unbounded latency and both already started:
 **Do not start building Phase 1 handlers before F1.0 resolves.** Its outcome changes the
 cloud/local split (see §4).
 
+**Neither blocker should idle you.** `POST /ingest` is the seam (Architecture §3.0): every
+capture client is an adapter over one internal function, so the entire pipeline is buildable
+and testable through a manual CLI while Meta is pending. Roadmap tasks T0–T5 need nothing
+external. If the Meta track is blocked, advance the other one.
+
 One open decision: **the name of the in-editor capture slash command.** The user is
 picking it. Do not invent one and bake it in.
 
@@ -49,6 +72,8 @@ Everything in `docs/` is the spec. Read the relevant one before proposing a chan
 | `docs/02-ARCHITECTURE.md` | Components, webhook routing, pipeline stages, data model | Any structural or data-shape change |
 | `docs/03-TECH-STACK.md` | Technology choices **and why alternatives were rejected** | Before proposing any dependency |
 | `docs/04-REQUIREMENTS.md` | Numbered, prioritized requirements (F1.x, F3.x…) | Implementing anything; cite the requirement ID |
+| `docs/05-BUILD-GUIDE.md` | How to work in this repo; near-term tactics | Starting out, or unsure how to drive a task |
+| **`docs/ROADMAP.md`** | **Task IDs, dependency graph, gates, status ledger** | **Every session — this is the execution protocol** |
 
 Requirement IDs are stable. Reference them in commits and PRs (`F1.6a`, not "the webhook thing").
 

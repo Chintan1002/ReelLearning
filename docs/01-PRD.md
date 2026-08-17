@@ -298,8 +298,13 @@ precisely the "what skills and files to use when" requirement.
 
 ## 9. Scope and phasing
 
+> **Execution note.** `docs/ROADMAP.md` is the machine-readable build protocol derived from
+> this table — task IDs, dependency graph, gates and a status ledger. This table is the
+> *intent*; the roadmap is the *order of operations*. Keep them consistent.
+
 | Phase | Deliverable | Rationale |
 |---|---|---|
+| **P−1** | **Validation spike — five real reels through a throwaway extraction script** | Added after the fact. D2 (multimodal extraction produces usable claims) is the riskiest assumption in this document and needs **no infrastructure** to test. Building P0 first defers the discovery by weeks and risks scaffolding a hollow centre |
 | **P0** | Foundations — data model, ingest API, job queue, deploy skeleton | Everything depends on this |
 | **P1** | Forward capture — IG DM webhook → extraction → claims | Proves the pipeline end-to-end on a handful of new reels, cheaply |
 | **P2** | Knowledge core — dedup, merge, categorisation, **minimal** review interface | The part that makes it a brain |
@@ -312,6 +317,19 @@ precisely the "what skills and files to use when" requirement.
 **Ordering note:** P3 before P4 is a deliberate call. Generating a plugin from 15 reels
 would produce something too thin to judge, and would give a false read on whether the
 whole idea works.
+
+**Phase gates.** Four points require a human decision and must not be inferred by an agent:
+
+| Gate | Question | Blocks | Cost of getting it wrong |
+|---|---|---|---|
+| **G1** — after P−1 | Are the extracted claims actionable enough to act on? | All of P0 | Weeks of infrastructure around an idea that does not work |
+| **G2** — after F1.0 | How do shared carousels actually arrive? | P1 handler design | Wrong cloud/local split; carousel capture silently unsupported |
+| **G3** — before P2 migration | Which embedding model, and therefore which vector dimension? | P2 schema | A column rewrite, not a re-embed (D7) |
+| **G4** — after P4 | Do the generated skills actually fire at the right moment? | Whether any of this pays off | The honest failure mode in §10 — a pipeline whose rules nobody reads |
+
+**Parallelism.** The Meta track (M2 → F1.0 → webhook) has unbounded external latency. The
+P−1 → P0 track has none. They are independent by design: `POST /ingest` is the seam, and the
+webhook is one origin among several. **Never idle on Meta.**
 
 ---
 

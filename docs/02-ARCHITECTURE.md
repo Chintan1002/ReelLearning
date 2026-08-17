@@ -96,6 +96,33 @@
 
 ## 3. Capture layer
 
+### 3.0 The ingest seam — every origin funnels into one function
+
+**Architectural rule, not a build convenience.** All capture clients converge on a single
+internal ingest function; each client is a thin adapter that normalises its input and calls
+it.
+
+```
+IG DM webhook   ─┐   (parses Meta payload, downloads inline)
+iOS Shortcut    ─┤
+Chrome extension─┼──►  POST /ingest  ──►  sources row + fetch_media job  ──►  pipeline
+MCP capture tool─┤        (the seam)
+Manual CLI      ─┘
+```
+
+**Three consequences worth stating:**
+
+1. **The webhook is not a special path.** It is one adapter among five. Pipeline logic must
+   never assume a source arrived from Instagram.
+2. **The build decouples from Meta.** The Meta app reaching Live mode has unbounded external
+   latency; the manual CLI adapter lets the entire pipeline be built and tested before it
+   clears. Meta then becomes an adapter added to a working system, rather than the pipeline
+   and the webhook being debugged simultaneously.
+3. **The CLI adapter is permanent**, not scaffolding. It stays the debugging entry point and
+   the way to replay a source after an extraction-prompt improvement.
+
+---
+
 ### 3.1 Instagram DM webhook
 
 Two endpoints:

@@ -10,12 +10,38 @@ collision made rows ambiguous.)
 
 ---
 
+> **Build order is defined in `docs/ROADMAP.md`**, which maps these requirements to task IDs
+> (T0…T15) and gates. Requirement numbering here is stable and does not imply execution
+> order.
+
+---
+
+## Phase −1 — Validation spike (before any infrastructure)
+
+Tests D2 — the riskiest assumption in the design — at near-zero cost. Needs no database, no
+API, no queue.
+
+| # | Req | Pri |
+|---|---|---|
+| F0.0a | Throwaway script fetches five real saved sources covering **all four content shapes** (talking-head, slide/text-on-screen, screen recording, carousel) plus one free choice, and returns `summary`, `topics[]`, `claims[]` as JSON | Must |
+| F0.0b | Per-item **cost** and **fetch duration** recorded, for both `yt-dlp` and `gallery-dl` | Must |
+| F0.0c | Outputs committed as the LLM **test fixtures** required by Tech Stack §11 | Must |
+
+**Exit (🚦 GATE 1 — human):** the claims are actionable standalone — worth acting on in a
+real build. If not, stop and reconsider D2 before writing further code.
+
+**Explicitly out of scope here:** frameworks, schemas, queues, abstractions. The spike is
+disposable; only its prompts and outputs survive, into F1.11.
+
+---
+
 ## Phase 0 — Foundations
 
 | # | Req | Pri |
 |---|---|---|
+| F0.0 | **`POST /ingest` is the single seam** all capture clients call (Architecture §3.0); a manual CLI adapter ships alongside it so the pipeline is buildable and testable **without** the Meta dependency | Must |
 | F0.1 | **DB host decided (Supabase)** and Postgres with pgvector provisioned; Alembic migrations wired. Deciding here is required because F2.13 depends on the table UI | Must |
-| F0.2 | Schema created per Architecture §6 (`sources`, `claims`, `knowledge_entries`, `entry_evidence`, `entry_assets`, `skills`, `plugin_builds`, `jobs`) | Must |
+| F0.2 | Schema created per Architecture §6 (`sources`, `claims`, `knowledge_entries`, `entry_evidence`, `entry_assets`, `skills`, `plugin_builds`, `jobs`). **Split across two migrations:** `sources` + `jobs` now; anything carrying a `vector(N)` column deferred until the embedding model is chosen (🚦 GATE 3 / D7) — the dimension is fixed at DDL time and changing it later is a column rewrite | Must |
 | F0.3 | FastAPI app deployed to a stable public HTTPS URL | Must |
 | F0.4 | Job queue: claim via `SELECT … FOR UPDATE SKIP LOCKED`, with attempts, backoff, `run_after`, `last_error` | Must |
 | F0.5 | Worker loop process, deployed alongside the API | Must |
@@ -25,7 +51,9 @@ collision made rows ambiguous.)
 | F0.9 | Docker Compose local dev environment | Should |
 | F0.10 | GitHub Actions → deploy on push to `main` | Should |
 
-**Exit:** a job can be enqueued via API, picked up by a worker, and marked complete, in production.
+**Exit:** a job can be enqueued via API, picked up by a worker, and marked complete, in
+production — **and** a permalink supplied to the CLI adapter flows end to end to structured
+claims, with no Meta dependency in the path.
 
 ---
 
