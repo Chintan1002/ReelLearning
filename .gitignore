@@ -30,3 +30,6 @@ venv/
 dist/
 build/
 .pytest_cache/
+
+# scratch for files awaiting manual deletion
+_to_delete/

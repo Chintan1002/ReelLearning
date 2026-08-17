@@ -48,7 +48,8 @@ while IFS=$'\t' read -r path base _; do
 done < "$MANIFEST"
 
 # Docs on disk that the manifest has never seen
-for f in docs/*.md CLAUDE.md; do
+# (CLAUDE.md is deliberately local-only: editor context, not a project doc)
+for f in docs/*.md; do
   [ -f "$f" ] || continue
   if ! cut -f1 "$MANIFEST" | grep -qxF "$f"; then
     printf '  %-14s %s\n' "UNTRACKED" "$f"; drift=1
