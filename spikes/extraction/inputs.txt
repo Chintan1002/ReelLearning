@@ -1,0 +1,18 @@
+# T0 extraction spike — inputs (F0.0a)
+#
+# Format:  <shape>  <permalink>
+# Lines starting with # are ignored.
+#
+# How to get a permalink from a saved post (iPhone):
+#   open the post → ··· (top right) → "Copy link" → paste below
+# On desktop: open the post → ··· → "Copy link"
+#
+# All four shapes must be covered. The carousel is the one that matters most:
+# it is the only one that exercises the image-sequence path, and it is the
+# path Meta does not document (see GATE 2).
+
+talking_head       <permalink>
+slides             <permalink>
+screen_recording   <permalink>
+carousel           <permalink>
+free               <permalink>
